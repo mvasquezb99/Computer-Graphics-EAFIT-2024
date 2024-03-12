@@ -10,7 +10,7 @@ public class App {
 
         // Open the file
         FileReader fileReader = new FileReader(
-                "C:\\Users\\bojan\\OneDrive\\Documents\\SistemasEAFIT\\quintoSemestre\\computacionGrafica\\3Dtransformations\\src\\casita3D.txt");
+                "C:\\Users\\bojan\\OneDrive\\Documents\\SistemasEAFIT\\quintoSemestre\\computacionGrafica\\challenges\\3Dtransformations\\src\\casita3D.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         // Read the lines of the file

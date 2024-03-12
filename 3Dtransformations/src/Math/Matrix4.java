@@ -67,6 +67,15 @@ public class Matrix4 {
         return ansMatrix4;
     }
 
+    public Point4 timesP4(Point4 point) {
+        Point4 answPoint = new Point4();
+        for (int i = 0; i < 4; i++) {
+            Vector4 va = this.matrix[i]; 
+            answPoint.setValue(va.getX() * point.getX() + va.getY() * point.getY() + va.getZ() * point.getZ() + va.getW() * point.getW(), i); 
+        }
+        return answPoint;
+    }
+
     public void printMatrix() {
         System.out.println("------------------------------------------");
         for (int i = 0; i < 4; i++) {

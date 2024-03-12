@@ -53,4 +53,18 @@ public class Vector4 {
     public Double getZ() {
         return z;
     }
+
+    public void setZ(Double v){
+        this.z = v;
+    }
+    public void setX(Double v){
+        this.x = v;
+    }
+    public void setY(Double v){
+        this.y = v;
+    }
+
+    public void setW(Double v){
+        this.w = v;
+    }
 }
