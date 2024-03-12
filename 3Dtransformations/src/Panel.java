@@ -101,10 +101,10 @@ public class Panel extends JPanel implements KeyListener {
             answMatrix.getVector3().setZ(Cz);
         } else if (opt == 2) {
             answMatrix.getVector1().setX(Cx);
-            answMatrix.getVector1().setY(-1. * Cy);
+            answMatrix.getVector1().setZ(Cy);
 
-            answMatrix.getVector2().setX(Cy);
-            answMatrix.getVector2().setY(Cx);
+            answMatrix.getVector3().setX(-1*Cy);
+            answMatrix.getVector3().setZ(Cx);
         }
         return answMatrix;
     }
@@ -130,7 +130,7 @@ public class Panel extends JPanel implements KeyListener {
         int tecla = e.getKeyCode();
 
         if (tecla == KeyEvent.VK_W) {
-            Matrix4 move = MakeOpMatrix(-10. * Math.sin(this.angle), 10. * Math.cos(this.angle), 0.0, 0);
+            Matrix4 move = MakeOpMatrix(10. * Math.sin(this.angle), 0.0, 10. * Math.cos(this.angle), 0);
             translateObj(points4_, move);
         } else if (tecla == KeyEvent.VK_U) {
             Matrix4 scaleUp = MakeOpMatrix(1.2, 1.2, 1.2, 1);
@@ -165,6 +165,9 @@ public class Panel extends JPanel implements KeyListener {
             Matrix4 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), pCopy.getZ(), 0);
             translateObj(points4_, moveBack);
 
+        } else if (tecla == KeyEvent.VK_S) {
+            Matrix4 move = MakeOpMatrix(-10. * Math.sin(this.angle), 0.0, -10. * Math.cos(this.angle), 0);
+            translateObj(points4_, move);
         }
         repaint();
         // } else if (tecla == KeyEvent.VK_DOWN) {
