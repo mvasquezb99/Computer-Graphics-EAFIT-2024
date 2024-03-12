@@ -213,12 +213,29 @@ public class Panel extends JPanel implements KeyListener {
         // translateObj(points2_, tL);
 
         if (tecla == KeyEvent.VK_U) {
+            Point3 pCopy = new Point3(points2_[3].getX(), points2_[3].getY(), 1.0);
+
+            Matrix3 moveToZero = MakeOpMatrix(-1 * points2_[3].getX(), -1 * points2_[3].getY(), 0);
+            translateObj(points2_, moveToZero);
+
             Matrix3 scaleUp = MakeOpMatrix(1.2, 1.2, 1);
             translateObj(points2_, scaleUp);
+            
+            Matrix3 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), 0);
+            translateObj(points2_, moveBack);
         } else if (tecla == KeyEvent.VK_I) {
+            Point3 pCopy = new Point3(points2_[3].getX(), points2_[3].getY(), 1.0);
+
+            Matrix3 moveToZero = MakeOpMatrix(-1 * points2_[3].getX(), -1 * points2_[3].getY(), 0);
+            translateObj(points2_, moveToZero);
+
             Matrix3 scaleDown = MakeOpMatrix(0.9, 0.9, 1);
             translateObj(points2_, scaleDown);
-        } else if (tecla == KeyEvent.VK_S) {
+
+            Matrix3 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), 0);
+            translateObj(points2_, moveBack);
+
+        } else if (tecla == KeyEvent.VK_Q) {
             Matrix3 rotateClk = MakeOpMatrix(Math.cos(.5), Math.sin(.5), 2);
             translateObj(points2_, rotateClk);
         } else if (tecla == KeyEvent.VK_E) {
@@ -234,11 +251,9 @@ public class Panel extends JPanel implements KeyListener {
             translateObj(points2_, rotateClk);
             this.angle -= .19;
 
-            System.out.println(angle);
             Matrix3 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), 0);
             translateObj(points2_, moveBack);
 
-            this.lastKey = 'A';
         } else if (tecla == KeyEvent.VK_D) {
             Point3 pCopy = new Point3(points2_[3].getX(), points2_[3].getY(), 1.0);
 
@@ -251,8 +266,6 @@ public class Panel extends JPanel implements KeyListener {
 
             Matrix3 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), 0);
             translateObj(points2_, moveBack);
-
-            this.lastKey = 'D';
         } else if (tecla == KeyEvent.VK_W) {
 
             Matrix3 moveFront = MakeOpMatrix(-10. * Math.sin(this.angle), 10. * Math.cos(this.angle), 0);
