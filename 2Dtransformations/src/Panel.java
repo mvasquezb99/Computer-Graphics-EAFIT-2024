@@ -190,7 +190,7 @@ public class Panel extends JPanel implements KeyListener {
         // }
         // Matrix3 tUp = MakeOpMatrix(0.0, 10.0, 0);
         // translateObj(points2_, tUp);
-        // // } else if (tecla == KeyEvent.VK_DOWN) {
+        // } else if (tecla == KeyEvent.VK_DOWN) {
         // if (this.dir != 'a') {
         // faceDir(points2_, 'a', this.dir);
         // this.dir = 'a';
@@ -236,10 +236,10 @@ public class Panel extends JPanel implements KeyListener {
             translateObj(points2_, moveBack);
 
         } else if (tecla == KeyEvent.VK_Q) {
-            Matrix3 rotateClk = MakeOpMatrix(Math.cos(.5), Math.sin(.5), 2);
+            Matrix3 rotateClk = MakeOpMatrix(Math.cos(.19), Math.sin(.19), 2);
             translateObj(points2_, rotateClk);
         } else if (tecla == KeyEvent.VK_E) {
-            Matrix3 rotateCclk = MakeOpMatrix(Math.cos(-.5), Math.sin(-.5), 2);
+            Matrix3 rotateCclk = MakeOpMatrix(Math.cos(-.19), Math.sin(-.19), 2);
             translateObj(points2_, rotateCclk);
         } else if (tecla == KeyEvent.VK_A) {
             Point3 pCopy = new Point3(points2_[3].getX(), points2_[3].getY(), 1.0);
