@@ -107,7 +107,7 @@ public class Panel extends JPanel implements KeyListener {
         this.DrawForm(g2d, this.points2_);
         this.DrawAxis(g);
     }
-    // ! I fucked up, this wasn´t challenge
+    // ! I fucked up, this wasn't challenge
     // public static void faceDir(Point3[] points, char opt, char dir) {
     // Point3 pCopy = new Point3(points[3].getX(), points[3].getY(), 1.0);
 
