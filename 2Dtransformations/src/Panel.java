@@ -234,11 +234,9 @@ public class Panel extends JPanel implements KeyListener {
             translateObj(points2_, rotateClk);
             this.angle -= .19;
 
-            System.out.println(angle);
             Matrix3 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), 0);
             translateObj(points2_, moveBack);
 
-            this.lastKey = 'A';
         } else if (tecla == KeyEvent.VK_D) {
             Point3 pCopy = new Point3(points2_[3].getX(), points2_[3].getY(), 1.0);
 
@@ -251,8 +249,6 @@ public class Panel extends JPanel implements KeyListener {
 
             Matrix3 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), 0);
             translateObj(points2_, moveBack);
-
-            this.lastKey = 'D';
         } else if (tecla == KeyEvent.VK_W) {
 
             Matrix3 moveFront = MakeOpMatrix(-10. * Math.sin(this.angle), 10. * Math.cos(this.angle), 0);
