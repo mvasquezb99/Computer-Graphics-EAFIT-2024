@@ -9,7 +9,8 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         // Open the file
-        FileReader fileReader = new FileReader("C:\\Users\\bojan\\OneDrive\\Documents\\SistemasEAFIT\\quintoSemestre\\computacionGrafica\\challenges\\2Dtransformations\\src\\house.txt");
+        FileReader fileReader = new FileReader(
+                "C:\\Users\\bojan\\OneDrive\\Documents\\SistemasEAFIT\\quintoSemestre\\computacionGrafica\\3Dtransformations\\src\\casita3D.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         // Read the lines of the file
@@ -24,20 +25,25 @@ public class App {
         bufferedReader.close();
 
         // Convert each line into an array of two numbers
-        Double[][] numbers = new Double[lines.size()][lines.size()];
+        Double[][] numbers = new Double[lines.size()][3];
         for (int i = 0; i < lines.size(); i++) {
             String[] parts = lines.get(i).split(" ");
-            if(parts.length >= 2){
-                Double[] x = new Double[]{Double.parseDouble(parts[0]), Double.parseDouble(parts[1])};
+            if (parts.length >= 3) {
+                Double[] x = new Double[] { Double.parseDouble(parts[0]), Double.parseDouble(parts[1]),
+                        Double.parseDouble(parts[2]) };
                 numbers[i] = x;
-            }else{
-                Double[] x = new Double[]{Double.parseDouble(parts[0])};
+            } else if (parts.length >= 2) {
+                Double[] x = new Double[] { Double.parseDouble(parts[0]), Double.parseDouble(parts[1])};
+                numbers[i] = x;
+            } else {
+                Double[] x = new Double[] { Double.parseDouble(parts[0]) };
                 numbers[i] = x;
             }
         }
 
-        Canvas c1 = new Canvas(500,500);
-        Panel p1 = new Panel(numbers);
+        Canvas c1 = new Canvas(500, 500);
+        Panel p1 = new Panel(
+                numbers);
         c1.add(p1);
         c1.setVisible(true);
         c1.setLocationRelativeTo(null);
@@ -45,8 +51,7 @@ public class App {
         c1.setTitle("Figura");
         p1.makeApexes();
 
-        //! ----------------------------------------------------
-
+        // ! ----------------------------------------------------
 
     }
 }
