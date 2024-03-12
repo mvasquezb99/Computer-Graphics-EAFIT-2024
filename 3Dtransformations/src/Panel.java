@@ -61,10 +61,21 @@ public class Panel extends JPanel implements KeyListener {
             int pStart = this.coordinates[i][0].intValue();
             int pEnd = this.coordinates[i][1].intValue();
 
-            line.x1 = getWidth() / 2 - point4s[pStart].getX();
-            line.y1 = getHeight() / 2 - point4s[pStart].getY();
-            line.x2 = getWidth() / 2 - point4s[pEnd].getX();
-            line.y2 = getHeight() / 2 - point4s[pEnd].getY();
+            Double x1,y1,y2,x2,z1,z2;
+            
+            z1 = point4s[pStart].getZ();
+            z2 = point4s[pEnd].getZ();
+
+            x1 = point4s[pStart].getX() / (z1/-100);
+            y1 = point4s[pStart].getY() / (z1/-100);
+            x2 = point4s[pEnd].getX() / (z2/-100);
+            y2 = point4s[pEnd].getY() / (z2/-100);
+
+            line.x1 = getWidth() / 2 - x1;
+            line.y1 = getHeight() / 2 - y1;
+            line.x2 = getWidth() / 2 - x2;
+            line.y2 = getHeight() / 2 - y2;
+
 
             g.setColor(Color.GREEN);
             g.draw(line);
