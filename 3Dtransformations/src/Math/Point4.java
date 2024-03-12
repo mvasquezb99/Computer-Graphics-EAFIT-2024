@@ -10,6 +10,13 @@ public class Point4 {
         this.z = z;
     }
 
+    public Point4(){
+        this.x = 0.0;
+        this.y = 0.0;
+        this.z = 0.0;
+        this.w = 0.0;
+    }
+
     public Double getX() {
         return x;
     }
@@ -33,5 +40,17 @@ public class Point4 {
 
     public void setZ(Double z){
         this.z = z;
+    }
+
+    public void setValue(Double v, int i) {
+        if(i == 0){
+            this.x = v;
+        }else if(i == 1){
+            this.y = v;
+        }else if(i == 2){
+            this.z = v;
+        }else{
+            this.w = v;
+        }
     }
 }
