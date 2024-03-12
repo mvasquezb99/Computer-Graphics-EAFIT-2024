@@ -212,6 +212,14 @@ public class Panel extends JPanel implements KeyListener {
         // Matrix3 tL = MakeOpMatrix(10.0, 0.0, 0);
         // translateObj(points2_, tL);
 
+        /*  
+            !W -> Adelante 
+            !A -> Voltea izquierda 
+            !D -> Voltea derecha 
+            !S -> Reversa 
+            !U -> Crece 
+            !I -> Decrece
+        */
         if (tecla == KeyEvent.VK_U) {
             Point3 pCopy = new Point3(points2_[3].getX(), points2_[3].getY(), 1.0);
 
@@ -271,6 +279,10 @@ public class Panel extends JPanel implements KeyListener {
             Matrix3 moveFront = MakeOpMatrix(-10. * Math.sin(this.angle), 10. * Math.cos(this.angle), 0);
             translateObj(points2_, moveFront);
 
+        } else if (tecla == KeyEvent.VK_S) {
+
+            Matrix3 moveFront = MakeOpMatrix(10. * Math.sin(this.angle), -10. * Math.cos(this.angle), 0);
+            translateObj(points2_, moveFront);
         }
 
         repaint();
