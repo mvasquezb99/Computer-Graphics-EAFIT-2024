@@ -8,9 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 import Math.Point4;
-import Math.Matrix3;
 import Math.Matrix4;
-import Math.Point3;
 
 public class Panel extends JPanel implements KeyListener {
 
