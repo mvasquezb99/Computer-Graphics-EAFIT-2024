@@ -9,7 +9,7 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         // Open the file
-        FileReader fileReader = new FileReader("C:\\Users\\bojan\\OneDrive\\Documents\\SistemasEAFIT\\quintoSemestre\\computacionGrafica\\2Dtransformations\\src\\house.txt");
+        FileReader fileReader = new FileReader("C:\\Users\\bojan\\OneDrive\\Documents\\SistemasEAFIT\\quintoSemestre\\computacionGrafica\\challenges\\2Dtransformations\\src\\house.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         // Read the lines of the file
