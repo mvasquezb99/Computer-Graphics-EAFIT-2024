@@ -135,6 +135,9 @@ public class Panel extends JPanel implements KeyListener {
         } else if (tecla == KeyEvent.VK_U) {
             Matrix4 scaleUp = MakeOpMatrix(1.2, 1.2, 1.2, 1);
             translateObj(points4_, scaleUp);
+        } else if (tecla == KeyEvent.VK_S) {
+            Matrix4 move = MakeOpMatrix(10. * Math.sin(this.angle), -10. * Math.cos(this.angle), 0.0, 0);
+            translateObj(points4_, move);
         } else if (tecla == KeyEvent.VK_A) {
             Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(), points4_[8].getZ(), 1.0);
 
@@ -152,7 +155,7 @@ public class Panel extends JPanel implements KeyListener {
 
         } else if (tecla == KeyEvent.VK_D) {
             Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(), points4_[8].getZ(), 1.0);
-            
+
             Matrix4 moveToZero = MakeOpMatrix(-1 * points4_[8].getX(), -1 * points4_[8].getY(), -1 * points4_[8].getZ(),
                     0);
             translateObj(points4_, moveToZero);
