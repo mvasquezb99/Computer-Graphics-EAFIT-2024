@@ -76,7 +76,7 @@ public class Panel extends JPanel implements KeyListener {
             line.x2 = getWidth() / 2 - x2;
             line.y2 = getHeight() / 2 - y2;
 
-            g.setColor(Color.orange);
+            g.setColor(Color.RED);
             g.draw(line);
         }
 
@@ -116,7 +116,7 @@ public class Panel extends JPanel implements KeyListener {
         Graphics2D g2d = (Graphics2D) g;
 
         this.DrawForm(g2d, this.points4_);
-        this.DrawAxis(g);
+        // this.DrawAxis(g);
     }
 
     public static void translateObj(Point4[] points4, Matrix4 matrix) {
