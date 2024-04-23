@@ -217,7 +217,6 @@ public class Panel extends JPanel implements MouseListener {
 
             } else {
                 System.out.println("Discard 2");
-
                 lineaErronea.x1 = x1;
                 lineaErronea.y1 = y1;
                 lineaErronea.x2 = x2;

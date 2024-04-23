@@ -17,6 +17,8 @@ public class Point4 {
         this.w = 0.0;
     }
 
+    
+
     public Double getX() {
         return x;
     }

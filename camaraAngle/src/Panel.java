@@ -1,5 +1,6 @@
 import javax.swing.JPanel;
 import java.awt.geom.Line2D;
+import java.util.Vector;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 import Math.Point4;
+import Math.Vector4;
 import Math.Matrix4;
 
 public class Panel extends JPanel implements KeyListener {
@@ -16,6 +18,12 @@ public class Panel extends JPanel implements KeyListener {
     Double apexes;
     Point4[] points4_;
     double angle;
+    Vector4 n;
+    Vector4 u;
+    Vector4 v;
+    Vector4 from;
+    Vector4 lookAt;
+    Vector4 Up;
 
     public Panel(Double[][] x) {
         setPreferredSize(new Dimension(600, 500));
@@ -26,6 +34,9 @@ public class Panel extends JPanel implements KeyListener {
         this.coordinates = x;
         this.apexes = this.coordinates[0][0];
         this.points4_ = this.makeApexes();
+        this.from = new Vector4(0.0, 0.0, -100.0, 0.0);
+        this.lookAt = new Vector4(0.0, 0.0, 1.0, 0.0);
+        this.Up = new Vector4(0.0, 1.0, 0.0, 0.0);
     }
 
     public void printCoords() {
@@ -88,7 +99,8 @@ public class Panel extends JPanel implements KeyListener {
         g.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
     }
 
-    public static Matrix4 MakeOpMatrix(Double Cx, Double Cy, Double Cz, int opt) {
+    public static Matrix4 MakeOpMatrix(Double Cx, Double Cy, Double Cz, int opt, Vector4 u, Vector4 v, Vector4 n,
+            Vector4 from) {
         Matrix4 answMatrix = new Matrix4();
 
         if (opt == 0) {
@@ -103,10 +115,44 @@ public class Panel extends JPanel implements KeyListener {
             answMatrix.getVector1().setX(Cx);
             answMatrix.getVector1().setZ(Cy);
 
-            answMatrix.getVector3().setX(-1*Cy);
+            answMatrix.getVector3().setX(-1 * Cy);
             answMatrix.getVector3().setZ(Cx);
+        } else if (opt == 3) {
+            Vector4 minusU = u.minus();
+            Vector4 minusV = v.minus();
+            Vector4 minusN = n.minus();
+
+            answMatrix.getVector1().setX(u.getX());
+            answMatrix.getVector1().setY(u.getY());
+            answMatrix.getVector1().setZ(u.getZ());
+            answMatrix.getVector1().setW(minusU.dotProduct4(from));
+
+            answMatrix.getVector2().setX(v.getX());
+            answMatrix.getVector2().setY(v.getY());
+            answMatrix.getVector2().setZ(v.getZ());
+            answMatrix.getVector2().setW(minusV.dotProduct4(from));
+
+            answMatrix.getVector3().setX(n.getX());
+            answMatrix.getVector3().setY(n.getY());
+            answMatrix.getVector3().setZ(n.getZ());
+            answMatrix.getVector3().setW(minusN.dotProduct4(from));
+
+        } else if (opt == 4) {
+            answMatrix.getVector4().setZ(Cz);
         }
         return answMatrix;
+    }
+
+    public void createUVN(Vector4 from, Vector4 lookAt, Vector4 up) {
+        this.n = from.substract(lookAt);
+
+        n.Normalize();
+
+        this.u = up.crossedProduct4(n);
+
+        u.Normalize();
+
+        this.v = n.crossedProduct4(u);
     }
 
     @Override
@@ -115,6 +161,7 @@ public class Panel extends JPanel implements KeyListener {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        this.createUVN(from, lookAt, Up);
         this.DrawForm(g2d, this.points4_);
         // this.DrawAxis(g);
     }
@@ -125,49 +172,66 @@ public class Panel extends JPanel implements KeyListener {
         }
     };
 
+    // from = <0,0,0> Up= y, lookat = +x
+
     @Override
     public void keyPressed(KeyEvent e) {
         int tecla = e.getKeyCode();
 
         if (tecla == KeyEvent.VK_W) {
-            Matrix4 move = MakeOpMatrix(10. * Math.sin(this.angle), 0.0, 10. * Math.cos(this.angle), 0);
+            // Matrix4 move = MakeOpMatrix(10. * Math.sin(this.angle), 0.0, 10. *
+            // Math.cos(this.angle), 0);
+            // translateObj(points4_, move);
+            Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(),
+                    points4_[8].getZ(), 1.0);
+
+            Matrix4 move = MakeOpMatrix(0.0, 0.0, 0.0, 3, this.u, this.v, this.n, this.from);
             translateObj(points4_, move);
+
+            Matrix4 project = MakeOpMatrix(0.0, 0.0, 1. / -200., 4, this.u, this.v, this.n, this.from);
+            translateObj(points4_, project);
+
         } else if (tecla == KeyEvent.VK_U) {
-            Matrix4 scaleUp = MakeOpMatrix(1.2, 1.2, 1.2, 1);
-            translateObj(points4_, scaleUp);
+            // Matrix4 scaleUp = MakeOpMatrix(1.2, 1.2, 1.2, 1);
+            // translateObj(points4_, scaleUp);
         } else if (tecla == KeyEvent.VK_A) {
-            Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(), points4_[8].getZ(), 1.0);
+            // Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(),
+            // points4_[8].getZ(), 1.0);
 
-            Matrix4 moveToZero = MakeOpMatrix(-1 * points4_[8].getX(), -1 * points4_[8].getY(), -1 * points4_[8].getZ(),
-                    0);
-            translateObj(points4_, moveToZero);
+            // Matrix4 moveToZero = MakeOpMatrix(-1 * points4_[8].getX(), -1 *
+            // points4_[8].getY(), -1 * points4_[8].getZ(),
+            // 0);
+            // translateObj(points4_, moveToZero);
 
-            Matrix4 rotZClkw = MakeOpMatrix(Math.cos(-.19), Math.sin(-.19), 0.0, 2);
-            translateObj(points4_, rotZClkw);
-            this.angle -= .19;
-            System.out.println(this.angle);
+            // Matrix4 rotZClkw = MakeOpMatrix(Math.cos(-.19), Math.sin(-.19), 0.0, 2);
+            // translateObj(points4_, rotZClkw);
+            // this.angle -= .19;
+            // System.out.println(this.angle);
 
-            Matrix4 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), pCopy.getZ(), 0);
-            translateObj(points4_, moveBack);
+            // Matrix4 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), pCopy.getZ(), 0);
+            // translateObj(points4_, moveBack);
 
         } else if (tecla == KeyEvent.VK_D) {
-            Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(), points4_[8].getZ(), 1.0);
+            // Point4 pCopy = new Point4(points4_[8].getX(), points4_[8].getY(),
+            // points4_[8].getZ(), 1.0);
 
-            Matrix4 moveToZero = MakeOpMatrix(-1 * points4_[8].getX(), -1 * points4_[8].getY(), -1 * points4_[8].getZ(),
-                    0);
-            translateObj(points4_, moveToZero);
+            // Matrix4 moveToZero = MakeOpMatrix(-1 * points4_[8].getX(), -1 *
+            // points4_[8].getY(), -1 * points4_[8].getZ(),
+            // 0);
+            // translateObj(points4_, moveToZero);
 
-            Matrix4 rotZCclkw = MakeOpMatrix(Math.cos(.19), Math.sin(.19), 0.0, 2);
-            translateObj(points4_, rotZCclkw);
-            this.angle += .19;
+            // Matrix4 rotZCclkw = MakeOpMatrix(Math.cos(.19), Math.sin(.19), 0.0, 2);
+            // translateObj(points4_, rotZCclkw);
+            // this.angle += .19;
 
-            System.out.println(this.angle);
-            Matrix4 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), pCopy.getZ(), 0);
-            translateObj(points4_, moveBack);
+            // System.out.println(this.angle);
+            // Matrix4 moveBack = MakeOpMatrix(pCopy.getX(), pCopy.getY(), pCopy.getZ(), 0);
+            // translateObj(points4_, moveBack);
 
         } else if (tecla == KeyEvent.VK_S) {
-            Matrix4 move = MakeOpMatrix(-10. * Math.sin(this.angle), 0.0, -10. * Math.cos(this.angle), 0);
-            translateObj(points4_, move);
+            // Matrix4 move = MakeOpMatrix(-10. * Math.sin(this.angle), 0.0, -10. *
+            // Math.cos(this.angle), 0);
+            // translateObj(points4_, move);
         }
         repaint();
         // } else if (tecla == KeyEvent.VK_DOWN) {
