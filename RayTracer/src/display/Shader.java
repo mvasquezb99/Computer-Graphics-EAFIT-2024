@@ -40,7 +40,7 @@ public class Shader {
                 Colour diffuse = IpLambda.timesScalar(Kd*dot);
                 diffuse = diffuse.timesColour(Olambda);
                 // Now compute the specular component
-                Colour specular = new Colour(0, 0, 0);    
+                Colour specular = new Colour(0,0,0);   
                 Vector4 Lneg = Vector4.subtract(point, light.position); // Negative light vector
                 Lneg.normalize();
                 // Compute R, the reflected light vector
@@ -50,7 +50,8 @@ public class Shader {
                 V.normalize();
                 double dot3 = Vector4.dotProduct(R, V);
                 if (dot3 > 0) {
-                    specular = IpLambda.timesScalar(Math.pow(Ks*dot3, n)).timesColour(Olambda);
+                    double r = Vector4.dotProduct(R, V);
+                    specular = IpLambda.timesScalar(Ks*Math.pow(r, n));
                 }
                 // Accumulate the diffuse and specular components
                 Ilambda.acumColor(diffuse);
