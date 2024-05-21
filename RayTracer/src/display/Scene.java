@@ -72,7 +72,9 @@ public class Scene {
                 double kD = in.nextDouble();
                 double kS = in.nextDouble();
                 int nExponent = in.nextInt();
-                Scene.materials.add(new Material(kA, kD, kS, nExponent));
+                double kO = in.nextDouble();
+                double kR = in.nextDouble();
+                Scene.materials.add(new Material(kA, kD, kS,kR,kO,nExponent));
             }
             // read the color index of the ambient light
             Scene.ambientLight = in.nextInt();
@@ -150,14 +152,17 @@ public class Scene {
 
     public static Colour intersectRay(Ray ray) {
         Colour pixelColor = backgroundColour;
+        Colour colorR = new Colour();
+        IntersectableObject i1 = null; 
         // Find the closest intersection
         Solution solution = null;
         for (IntersectableObject object : io) {
             Solution s = object.intersect(ray);
-            if (s != null) {
+            if (s != null && s.t > 0.001) {
                 if (solution == null) {
                     // First solution found
                     solution = s;
+                    i1 = object;
                 } else {
                     // Take into account that the objects have been
                     // transformed to camera coordinates, that is to say,
@@ -166,22 +171,36 @@ public class Scene {
                     // Keep the solution with the smallest z value
                     if (s.intersectionPoint.vector[2] > solution.intersectionPoint.vector[2]) {
                         solution = s;
+                        i1 = object;
                     }
                 }
             }
         }
         // If there is an intersection, paint the pixel
-        if (solution != null) {
+        if (solution != null && i1 != null) {
             // x and y are world coordinates
             // zBuffer translates them to screen coordinates
             Vector4 point = solution.intersectionPoint;
             Vector4 normal = solution.normal;
             Colour colour = solution.colour;
             Material material = solution.material;
-            // See if the point is in the shadow of an object
+
             pixelColor = Shader.computeLocalIllumination(point, normal, colour, material);
+            pixelColor = pixelColor.timesScalar(material.kO);
+
+            Vector4 end = Vector4.subtract(ray.direction, Vector4.multiply(normal, 2*Vector4.dotProduct(ray.direction, normal)));
+            Ray rayR = new Ray();
+            rayR.origin = point;
+            rayR.direction = end;
+
+            colorR = Scene.intersectRay(rayR);
+
+            colorR = colorR.timesScalar(material.kR);
+            
+            // See if the point is in the shadow of an object
+            //! Mandar el rayo aca
         }
-        return pixelColor;
+        return pixelColor.add(colorR);
     }
 
     public static Solution intersectForShadow(Ray ray) {

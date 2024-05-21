@@ -5,7 +5,7 @@ import geometry.Ray;
 import geometry.Solution;
 
 public class Shader {
-        /**
+        /** 
          * Compute the local illumination of a point in the scene
          * @param point Intersection point of the ray with the object
          * @param N Normal of the object at the point of intersection
